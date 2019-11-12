@@ -570,3 +570,8 @@ void nrf_802154_wifi_coex_denied(void)
     prec_approved_prio_set(RSCH_PREC_COEX, RSCH_PRIO_RX);
     notify_core();
 }
+
+uint32_t nrf_802154_rsch_get_next_scheduled_receive_time(void)
+{
+    return m_dly_ts[RSCH_DLY_RX].t0 + m_dly_ts[RSCH_DLY_RX].dt;
+}
