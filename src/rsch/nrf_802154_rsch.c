@@ -712,3 +712,8 @@ void nrf_802154_wifi_coex_denied(void)
 
     nrf_802154_log_function_exit(NRF_802154_LOG_VERBOSITY_LOW);
 }
+
+uint32_t nrf_802154_rsch_get_next_scheduled_receive_time(void)
+{
+    return m_dly_ts[RSCH_DLY_RX].t0 + m_dly_ts[RSCH_DLY_RX].dt;
+}

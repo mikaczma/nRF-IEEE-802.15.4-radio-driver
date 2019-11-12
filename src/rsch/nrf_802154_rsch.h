@@ -260,6 +260,13 @@ bool nrf_802154_rsch_prec_is_approved(rsch_prec_t prec, rsch_prio_t prio);
 uint32_t nrf_802154_rsch_timeslot_us_left_get(void);
 
 /**
+ * @brief Gets the time of the next receive delayed timeslot trigger time.
+ *
+ * @returns  Time of the next receive delayed timeslot trigger time.
+ */
+uint32_t nrf_802154_rsch_get_next_scheduled_receive_time(void);
+
+/**
  * @brief Notifies the core about changes of the approved priority level.
  *
  * If @p prio is greater than @ref RSCH_PRIO_IDLE, the radio driver has exclusive access to the
