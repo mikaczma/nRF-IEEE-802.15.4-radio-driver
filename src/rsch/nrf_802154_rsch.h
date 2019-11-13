@@ -219,9 +219,16 @@ uint32_t nrf_802154_rsch_timeslot_us_left_get(void);
 /**
  * @brief Gets the time of the next receive delayed timeslot trigger time.
  *
- * @returns  Time of the next receive delayed timeslot trigger time.
+ * @returns  Time of the next receive delayed timeslot trigger time in microseconds.
  */
 uint32_t nrf_802154_rsch_get_next_scheduled_receive_time(void);
+
+/**
+ * @brief Gets the time of the next receive delayed timeslot trigger time in symbols.
+ *
+ * @returns  Amount of symbols for the next receive delayed timeslot trigger time.
+ */
+uint32_t nrf_802154_rsch_get_next_scheduled_receive_symbols(void);
 
 /**
  * @brief Notifies the core about changes of the approved priority level.
