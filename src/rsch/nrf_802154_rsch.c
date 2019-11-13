@@ -51,6 +51,8 @@
                                                 PREC_RAMP_UP_MARGIN)
 #endif
 
+#define SYMBOLS_PER_SECOND                      62500
+
 static volatile uint8_t     m_ntf_mutex;                     ///< Mutex for notyfying core.
 static volatile uint8_t     m_ntf_mutex_monitor;             ///< Mutex monitor, incremented every failed ntf mutex lock.
 static volatile uint8_t     m_req_mutex;                     ///< Mutex for requesting preconditions.
@@ -716,4 +718,9 @@ void nrf_802154_wifi_coex_denied(void)
 uint32_t nrf_802154_rsch_get_next_scheduled_receive_time(void)
 {
     return m_dly_ts[RSCH_DLY_RX].t0 + m_dly_ts[RSCH_DLY_RX].dt;
+}
+
+uint32_t nrf_802154_rsch_get_next_scheduled_receive_symbols(void)
+{
+    return nrf_802154_rsch_get_next_scheduled_receive_time() * 1000000 / SYMBOLS_PER_SECOND;
 }
