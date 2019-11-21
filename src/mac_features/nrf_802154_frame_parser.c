@@ -44,6 +44,11 @@
 
 #include "nrf_802154_const.h"
 
+#define IE_HEADER_BYTES            2    ///< Length of IE header without content
+#define IE_HEADER_CSL_ID           0x1A ///< ID of IE header for CSL
+#define IE_HEADER_TERMINATION_1_ID 0x7E ///< ID of IE header for Header Termination 1
+#define IE_HEADER_TERMINATION_2_ID 0x7F ///< ID of IE header for Header Termination 2
+
 /***************************************************************************************************
  * @section Helper functions
  **************************************************************************************************/
@@ -325,6 +330,11 @@ bool nrf_802154_frame_parser_src_addr_is_short(const uint8_t * p_frame)
 bool nrf_802154_frame_parser_dsn_suppress_bit_is_set(const uint8_t * p_frame)
 {
     return (p_frame[DSN_SUPPRESS_OFFSET] & DSN_SUPPRESS_BIT) ? true : false;
+}
+
+bool nrf_802154_frame_parser_security_enabled_bit_is_set(const uint8_t * p_frame)
+{
+    return security_is_enabled(p_frame);
 }
 
 bool nrf_802154_frame_parser_ie_present_bit_is_set(const uint8_t * p_frame)
@@ -679,4 +689,84 @@ const uint8_t * nrf_802154_frame_parser_ie_header_get(const uint8_t * p_frame)
     }
 
     return &p_frame[ie_header_offset];
+}
+
+const uint8_t nrf_802154_frame_parser_ie_header_length_get(const uint8_t * p_ie_header)
+{
+    if (p_ie_header == NULL)
+    {
+        return 0;
+    }
+
+    return (uint8_t)(*((const uint16_t *)p_ie_header) & 0x7F);
+}
+
+const uint8_t nrf_802154_frame_parser_ie_header_type_get(const uint8_t * p_ie_header)
+{
+    if (p_ie_header == NULL)
+    {
+        return 0;
+    }
+
+    return (uint8_t)(*((const uint16_t *)p_ie_header) >> 7);
+}
+
+bool nrf_802154_frame_parser_is_csl_ie_header_available(const uint8_t * p_frame)
+{
+    const uint8_t * p_ie_header = nrf_802154_frame_parser_ie_header_get(p_frame);
+
+    if (p_ie_header == NULL)
+    {
+        return false;
+    }
+
+    while ((nrf_802154_frame_parser_ie_header_type_get(p_ie_header) !=
+            IE_HEADER_TERMINATION_1_ID) &&
+           (nrf_802154_frame_parser_ie_header_type_get(p_ie_header) != IE_HEADER_TERMINATION_2_ID))
+    {
+        switch (nrf_802154_frame_parser_ie_header_type_get(p_ie_header))
+        {
+            case IE_HEADER_CSL_ID:
+                return true;
+                break;
+
+            default:
+                break;
+        }
+
+        p_ie_header +=
+            (nrf_802154_frame_parser_ie_header_length_get(p_ie_header) + IE_HEADER_BYTES);
+    }
+
+    return false;
+}
+
+const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_frame)
+{
+    const uint8_t * p_ie_header = nrf_802154_frame_parser_ie_header_get(p_frame);
+
+    if (p_ie_header == NULL)
+    {
+        return NULL;
+    }
+
+    while ((nrf_802154_frame_parser_ie_header_type_get(p_ie_header) !=
+            IE_HEADER_TERMINATION_1_ID) &&
+           (nrf_802154_frame_parser_ie_header_type_get(p_ie_header) != IE_HEADER_TERMINATION_2_ID))
+    {
+        switch (nrf_802154_frame_parser_ie_header_type_get(p_ie_header))
+        {
+            case IE_HEADER_CSL_ID:
+                return p_ie_header;
+                break;
+
+            default:
+                break;
+        }
+
+        p_ie_header +=
+            (nrf_802154_frame_parser_ie_header_length_get(p_ie_header) + IE_HEADER_BYTES);
+    }
+
+    return NULL;
 }
