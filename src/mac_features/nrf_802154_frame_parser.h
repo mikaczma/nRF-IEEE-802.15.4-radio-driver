@@ -327,45 +327,45 @@ uint8_t nrf_802154_frame_parser_ie_header_offset_get(const uint8_t * p_frame);
 
 /**
  * @brief Gets length of IE header content
- * 
+ *
  * @param[in] p_ie_header  Pointer to IE header
- * 
+ *
  * @returns Length of IE header content in bytes
  * @returns Zero if IE header pointer is NULL
- * 
- */ 
+ *
+ */
 const uint8_t nrf_802154_frame_parser_ie_header_length_get(const uint8_t * p_ie_header);
 
 /**
  * @brief Gets type ID of IE header
- * 
+ *
  * @param[in] p_ie_header  Pointer to IE header
- * 
+ *
  * @returns Type ID of IE header content
  * @returns Zero if IE header pointer is NULL
- * 
+ *
  */
 const uint8_t nrf_802154_frame_parser_ie_header_type_get(const uint8_t * p_ie_header);
 
 /**
  * @brief Check if IE CSL header field is present in the provided frame
- * 
+ *
  * @param[in] p_frame  Pointer to a frame
- * 
+ *
  * @returns True if IE CSL header is present in a frame
  * @returns False if IE CSL header is not present in a frame
- * 
+ *
  */
 bool nrf_802154_frame_parser_is_csl_ie_header_available(const uint8_t * p_frame);
 
 /**
  * @brief Gets the IE CSL header field in the provided frame
- * 
+ *
  * @param[in] p_frame  Pointer to a frame
- * 
+ *
  * @returns  Pointer to the first byte of the IE CSL header field in @p p_frame.
  * @returns  NULL if the IE CSL header cannot be retrieved (that is, the IE CSL header is not present).
- * 
+ *
  */
 const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_frame);
 
