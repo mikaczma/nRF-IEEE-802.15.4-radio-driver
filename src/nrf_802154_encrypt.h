@@ -109,6 +109,15 @@ void nrf_802154_encrypt_schedule_aes_ccm_auth_transform(
     const nrf_802154_encrypt_aes_ccm_frame_t * p_frame);
 
 /**
+ * @brief Trigger AES-CCM* 2015 standard authorization transformation
+ *
+ * @param[in] p_frame frame for AES-CCM*
+ */
+void nrf_802154_encrypt_aes_ccm_auth_transform_trigger(const uint8_t * p_frame);
+
+#ifdef ENCRYPT_TX_STARTED
+
+/**
  * @brief Callback to tx_started notification
  *        During this callback transformation is started
  *
@@ -116,4 +125,5 @@ void nrf_802154_encrypt_schedule_aes_ccm_auth_transform(
  */
 void nrf_802154_tx_started(const uint8_t * p_frame);
 
+#endif // ENCRYPT_TX_STARTED
 #endif /* NRF_802154_ENCRYPT_H_ */

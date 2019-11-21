@@ -366,6 +366,8 @@ void ECB_IRQHandler(void)
                         m_state.iteration      = 0;
                         m_state.transformation = CALCULATE_ENCRYPTED_TAG;
                         process_ecb_encrypt_iteration();
+                    } else {
+                        m_aes_ccm_frame.raw_frame = NULL;
                     }
                 }
                 break;
@@ -378,6 +380,7 @@ void ECB_IRQHandler(void)
                         1),
                        m_auth_tag,
                        m_mic_size[m_aes_ccm_frame.mic_level]);
+                m_aes_ccm_frame.raw_frame = NULL;
                 break;
 
             default:
@@ -493,7 +496,7 @@ void nrf_802154_encrypt_schedule_aes_ccm_auth_transform(
     }
 
     // Check if security level is in range
-    if (p_frame->mic_level < (sizeof(m_mic_size) / sizeof(m_mic_size[0])))
+    if (p_frame->mic_level >= (sizeof(m_mic_size) / sizeof(m_mic_size[0])))
     {
         return;
     }
@@ -503,12 +506,19 @@ void nrf_802154_encrypt_schedule_aes_ccm_auth_transform(
     nrf_802154_encrypt_aes_ccm_set_nonce(p_frame->nonce);
 }
 
-void nrf_802154_tx_started(const uint8_t * p_frame)
+void nrf_802154_encrypt_aes_ccm_auth_transform_trigger(const uint8_t * p_frame)
 {
     if (p_frame == m_aes_ccm_frame.raw_frame && m_aes_ccm_frame.raw_frame != NULL)
     {
         nrf_802154_encrypt_aes_ccm_auth_transform(&m_aes_ccm_frame);
-        m_aes_ccm_frame.raw_frame = NULL;
     }
-
 }
+
+#ifdef ENCRYPT_TX_STARTED
+
+void nrf_802154_tx_started(const uint8_t * p_frame)
+{
+    nrf_802154_encrypt_aes_ccm_auth_transform_trigger(p_frame);
+}
+
+#endif // ENCRYPT_TX_STARTED
