@@ -366,7 +366,9 @@ void ECB_IRQHandler(void)
                         m_state.iteration      = 0;
                         m_state.transformation = CALCULATE_ENCRYPTED_TAG;
                         process_ecb_encrypt_iteration();
-                    } else {
+                    }
+                    else
+                    {
                         m_aes_ccm_frame.raw_frame = NULL;
                     }
                 }
