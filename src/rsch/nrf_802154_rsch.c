@@ -51,7 +51,7 @@
                                                 PREC_RAMP_UP_MARGIN)
 #endif
 
-#define SYMBOLS_PER_SECOND                      62500
+#define SYMBOLS_PER_SECOND                     62500
 
 static volatile uint8_t     m_ntf_mutex;                     ///< Mutex for notyfying core.
 static volatile uint8_t     m_ntf_mutex_monitor;             ///< Mutex monitor, incremented every failed ntf mutex lock.
