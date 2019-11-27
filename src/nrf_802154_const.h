@@ -82,6 +82,11 @@
 #define IE_PRESENT_OFFSET            2                                            ///< Byte containing the IE Present bit.
 #define IE_PRESENT_BIT               0x02                                         ///< Bits containing the IE Present field.
 
+#define IE_HEADER_BYTES              2                                            ///< Length of IE header without content
+#define IE_HEADER_CSL_ID             0x1A                                         ///< ID of IE header for CSL
+#define IE_HEADER_TERMINATION_1_ID   0x7E                                         ///< ID of IE header for Header Termination 1
+#define IE_HEADER_TERMINATION_2_ID   0x7F                                         ///< ID of IE header for Header Termination 2
+
 #define KEY_ID_MODE_MASK             0x18                                         ///< Mask of bits containing Key Identifier Mode in the Security Control field.
 #define KEY_ID_MODE_0                0                                            ///< Bits containing the 0x00 Key Identifier Mode.
 #define KEY_ID_MODE_1                0x08                                         ///< Bits containing the 0x01 Key Identifier Mode.

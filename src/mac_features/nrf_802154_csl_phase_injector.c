@@ -38,12 +38,24 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
-#include "nrf_802154_csl.h"
+#include "nrf_802154_csl_phase_injector.h"
 #include "rsch/nrf_802154_rsch.h"
-#include "mac_features/nrf_802154_frame_parser.h"
-#include "nrf_802154_encrypt.h"
+#include "nrf_802154_frame_parser.h"
+#include "../nrf_802154_encrypt.h"
 
 #define IE_CSL_HEADER_PHASE_BYTE 2 ///< IE CSL Header Phase octet position
+
+#define SYMBOLS_PER_SECOND       62500
+
+/**
+ * @brief Gets the time of the next receive delayed timeslot trigger time in symbols.
+ *
+ * @returns  Amount of symbols for the next receive delayed timeslot trigger time.
+ */
+static uint32_t nrf_802154_rsch_get_next_scheduled_receive_symbols(void)
+{
+    return nrf_802154_rsch_get_next_scheduled_receive_time() * 1000000 / SYMBOLS_PER_SECOND;
+}
 
 /**
  * @brief   Update CSL Phase field
@@ -52,17 +64,22 @@
  * @param[in] p_frame Pointer to IE CSL header
  * @param[in] phase   Value of actual CSL phase given in symbols
  */
-static void nrf_802154_csl_phase_update(const uint8_t * p_ie_csl_header, uint16_t phase)
+static void nrf_802154_csl_phase_update(uint8_t * p_ie_csl_header, uint16_t phase)
 {
-    *(uint16_t *)(p_ie_csl_header + IE_CSL_HEADER_PHASE_BYTE) = phase / 10;
+    uint16_t csl_phase = phase / 10;
+
+    p_ie_csl_header[IE_CSL_HEADER_PHASE_BYTE + 1] = ((csl_phase & 0xFF00) >> 8);
+    p_ie_csl_header[IE_CSL_HEADER_PHASE_BYTE]     = (csl_phase & 0xFF);
 }
 
+// Function also defined in nrf_802154_encrypt.c but disabled by define guard
+// Decided with @hubertmis to keep both functions in repo
 void nrf_802154_tx_started(const uint8_t * p_frame)
 {
-    if (nrf_802154_frame_parser_is_csl_ie_header_available(p_frame))
-    {
-        const uint8_t * p_ie_csl_header = nrf_802154_frame_parser_csl_ie_header_get(p_frame);
+    uint8_t * p_ie_csl_header = (uint8_t *)nrf_802154_frame_parser_csl_ie_header_get(p_frame); // Const keyword removed by design to update data behind pointer
 
+    if (p_ie_csl_header != NULL)
+    {
         uint32_t phase = nrf_802154_rsch_get_next_scheduled_receive_symbols();
 
         nrf_802154_csl_phase_update(p_ie_csl_header, phase);
