@@ -40,6 +40,7 @@
 #include <string.h>
 
 #include "mac_features/nrf_802154_frame_parser.h"
+#include "mac_features/nrf_802154_csl_phase_injector.h"
 #include "nrf_802154_ack_data.h"
 #include "nrf_802154_const.h"
 #include "nrf_802154_pib.h"
@@ -353,6 +354,15 @@ const uint8_t * nrf_802154_enh_ack_generator_create(const uint8_t * p_frame)
         frame_offsets.p_src_addr,
         frame_offsets.src_addr_size == EXTENDED_ADDRESS_SIZE,
         &ie_data_len);
+
+
+    //
+    if (p_ie_data != NULL)
+    {
+        uint8_t * p_ie_csl_header = (uint8_t *)nrf_802154_frame_parser_csl_ie_header_get(p_frame); // Const keyword removed by design to update data behind pointer
+
+        nrf_802154_csl_phase_injector_ie_csl_header_phase_update(p_ie_csl_header);
+    }
 
     // Clear previously created ACK.
     ack_buffer_clear();
