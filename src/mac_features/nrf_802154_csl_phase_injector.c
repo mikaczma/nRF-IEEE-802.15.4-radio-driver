@@ -52,24 +52,36 @@
  *
  * @returns  Amount of symbols for the next receive delayed timeslot trigger time.
  */
-static uint32_t nrf_802154_rsch_get_next_scheduled_receive_symbols(void)
+static uint32_t nrf_802154_csl_phase_injector_phase_symbols_get(void)
 {
     return nrf_802154_rsch_get_next_scheduled_receive_time() * 1000000 / SYMBOLS_PER_SECOND;
 }
 
 /**
  * @brief   Update CSL Phase field
- * IEEE std 802.15.4-2015, B.4.1.2 Authentication transformation
  *
  * @param[in] p_frame Pointer to IE CSL header
  * @param[in] phase   Value of actual CSL phase given in symbols
  */
-static void nrf_802154_csl_phase_update(uint8_t * p_ie_csl_header, uint16_t phase)
+static void nrf_802154_csl_phase_injector_phase_update(uint8_t * p_ie_csl_header, uint16_t phase)
 {
     uint16_t csl_phase = phase / 10;
 
     p_ie_csl_header[IE_CSL_HEADER_PHASE_BYTE + 1] = ((csl_phase & 0xFF00) >> 8);
     p_ie_csl_header[IE_CSL_HEADER_PHASE_BYTE]     = (csl_phase & 0xFF);
+}
+
+bool nrf_802154_csl_phase_injector_ie_csl_header_phase_update(uint8_t * p_ie_csl_header)
+{
+    if (p_ie_csl_header != NULL)
+    {
+        uint32_t phase = nrf_802154_csl_phase_injector_phase_symbols_get();
+
+        nrf_802154_csl_phase_injector_phase_update(p_ie_csl_header, phase);
+        return true;
+    }
+
+    return false;
 }
 
 // Function also defined in nrf_802154_encrypt.c but disabled by define guard
@@ -78,12 +90,7 @@ void nrf_802154_tx_started(const uint8_t * p_frame)
 {
     uint8_t * p_ie_csl_header = (uint8_t *)nrf_802154_frame_parser_csl_ie_header_get(p_frame); // Const keyword removed by design to update data behind pointer
 
-    if (p_ie_csl_header != NULL)
-    {
-        uint32_t phase = nrf_802154_rsch_get_next_scheduled_receive_symbols();
-
-        nrf_802154_csl_phase_update(p_ie_csl_header, phase);
-    }
+    nrf_802154_csl_phase_injector_ie_csl_header_phase_update(p_ie_csl_header);
 
     if (nrf_802154_frame_parser_security_enabled_bit_is_set(p_frame))
     {

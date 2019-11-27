@@ -44,6 +44,14 @@ extern "C" {
 #endif
 
 /**
+ * @brief   Update CSL Phase field in IE header
+ * IEEE std 802.15.4-2015
+ *
+ * @param[in] p_ie_csl_header Pointer to IE CSL header
+ */
+bool nrf_802154_csl_phase_injector_ie_csl_header_phase_update(uint8_t * p_ie_csl_header);
+
+/**
  * @brief Callback to tx_started notification
  *        During this callback transformation is started
  *
