@@ -693,7 +693,7 @@ uint8_t nrf_802154_frame_parser_ie_header_length_get(const uint8_t * p_ie_header
         return 0;
     }
 
-    return p_ie_header[0] & 0x7F;
+    return p_ie_header[IE_HEADER_LENGTH_OFFSET] & IE_HEADER_LENGTH_MASK;
 }
 
 uint8_t nrf_802154_frame_parser_ie_header_type_get(const uint8_t * p_ie_header)
@@ -703,9 +703,9 @@ uint8_t nrf_802154_frame_parser_ie_header_type_get(const uint8_t * p_ie_header)
         return 0;
     }
 
-    uint8_t ie_header_type = (p_ie_header[0] & 0x80) >> 7;
+    uint8_t ie_header_type = (p_ie_header[IE_HEADER_TYPE_OFFSET_0] & IE_HEADER_TYPE_MASK_0) >> 7;
 
-    ie_header_type |= p_ie_header[1] << 1;
+    ie_header_type |= (p_ie_header[IE_HEADER_TYPE_OFFSET_1] & IE_HEADER_TYPE_MASK_1) << 1;
 
     return ie_header_type;
 }
@@ -723,7 +723,7 @@ bool nrf_802154_frame_parser_is_csl_ie_header_available(const uint8_t * p_frame)
             IE_HEADER_TERMINATION_1_ID) &&
            (nrf_802154_frame_parser_ie_header_type_get(p_ie_header) !=
             IE_HEADER_TERMINATION_2_ID) &&
-           (p_ie_header < (p_frame + p_frame[0])))
+           (p_ie_header < (p_frame + p_frame[PHR_OFFSET])))
     {
         if (nrf_802154_frame_parser_ie_header_type_get(p_ie_header) == IE_HEADER_CSL_ID)
         {
@@ -731,7 +731,7 @@ bool nrf_802154_frame_parser_is_csl_ie_header_available(const uint8_t * p_frame)
         }
 
         p_ie_header +=
-            (nrf_802154_frame_parser_ie_header_length_get(p_ie_header) + IE_HEADER_BYTES);
+            (nrf_802154_frame_parser_ie_header_length_get(p_ie_header) + IE_HEADER_OCTETS);
     }
 
     return false;
@@ -750,7 +750,7 @@ const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_fram
             IE_HEADER_TERMINATION_1_ID) &&
            (nrf_802154_frame_parser_ie_header_type_get(p_ie_header) !=
             IE_HEADER_TERMINATION_2_ID) &&
-           (p_ie_header < (p_frame + p_frame[0])))
+           (p_ie_header < (p_frame + p_frame[PHR_OFFSET])))
     {
         if (nrf_802154_frame_parser_ie_header_type_get(p_ie_header) == IE_HEADER_CSL_ID)
         {
@@ -758,7 +758,7 @@ const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_fram
         }
 
         p_ie_header +=
-            (nrf_802154_frame_parser_ie_header_length_get(p_ie_header) + IE_HEADER_BYTES);
+            (nrf_802154_frame_parser_ie_header_length_get(p_ie_header) + IE_HEADER_OCTETS);
     }
 
     return NULL;
