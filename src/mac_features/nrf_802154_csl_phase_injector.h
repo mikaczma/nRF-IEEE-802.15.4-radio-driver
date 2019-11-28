@@ -45,7 +45,7 @@ extern "C" {
 
 /**
  * @brief   Update CSL Phase field in IE header
- * IEEE std 802.15.4-2015
+ * IEEE std 802.15.4-2015 - According to 6.12.2 and 7.4.2.3
  *
  * @param[in] p_ie_csl_header Pointer to IE CSL header
  */
