@@ -698,11 +698,6 @@ uint8_t nrf_802154_frame_parser_ie_header_length_get(const uint8_t * p_ie_header
 
 uint8_t nrf_802154_frame_parser_ie_header_elementid_get(const uint8_t * p_ie_header)
 {
-    if (p_ie_header == NULL)
-    {
-        return 0;
-    }
-
     uint8_t ie_header_type =
         (p_ie_header[IE_HEADER_ELEMENTID_OFFSET_0] & IE_HEADER_ELEMENTID_MASK_0) >> 7;
 
