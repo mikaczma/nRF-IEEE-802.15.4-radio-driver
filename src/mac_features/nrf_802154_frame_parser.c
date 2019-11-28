@@ -48,6 +48,12 @@
  * @section Helper functions
  **************************************************************************************************/
 
+// Type
+static uint8_t frame_type_get(const uint8_t * p_frame)
+{
+    return p_frame[FRAME_TYPE_OFFSET] & FRAME_TYPE_MASK;
+}
+
 // Version
 static uint8_t frame_version_get(const uint8_t * p_frame)
 {
@@ -737,4 +743,9 @@ const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_fram
     }
 
     return NULL;
+}
+
+uint8_t nrf_802154_frame_parser_frame_type_get(const uint8_t * p_frame)
+{
+    return frame_type_get(p_frame);
 }

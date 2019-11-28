@@ -369,4 +369,14 @@ bool nrf_802154_frame_parser_is_csl_ie_header_available(const uint8_t * p_frame)
  */
 const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_frame);
 
+/**
+ * @brief Gets the frame type of the provided frame
+ *
+ * @param[in] p_frame  Pointer to a frame
+ *
+ * @returns  Value of a given type of the @p p_frame.
+ *
+ */
+uint8_t nrf_802154_frame_parser_frame_type_get(const uint8_t * p_frame);
+
 #endif // NRF_802154_FRAME_PARSER_H
