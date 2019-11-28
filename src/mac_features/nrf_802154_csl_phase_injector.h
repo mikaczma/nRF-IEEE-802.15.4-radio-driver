@@ -34,8 +34,8 @@
  *  Based on IEEE Standard for Low-Rate Wireless Networks  - IEEE Std 802.15.4-2015
  */
 
-#ifndef NRF_802154_CSL_H_
-#define NRF_802154_CSL_H_
+#ifndef NRF_802154_CSL_PHASE_INJECTOR_H_
+#define NRF_802154_CSL_PHASE_INJECTOR_H_
 
 #include <stdint.h>
 
@@ -59,4 +59,4 @@ bool nrf_802154_csl_phase_injector_ie_csl_header_phase_update(uint8_t * p_ie_csl
  */
 void nrf_802154_tx_started(const uint8_t * p_frame);
 
-#endif /* NRF_802154_CSL_H_ */
+#endif /* NRF_802154_CSL_PHASE_INJECTOR_H_ */
