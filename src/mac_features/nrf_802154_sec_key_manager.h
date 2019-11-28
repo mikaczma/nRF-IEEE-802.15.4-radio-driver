@@ -34,20 +34,14 @@
  *  Based on IEEE Standard for Low-Rate Wireless Networks  - IEEE Std 802.15.4-2015
  */
 
-#ifndef NRF_802154_KEY_MANAGER_H_
-#define NRF_802154_KEY_MANAGER_H_
+#ifndef NRF_802154_SEC_KEY_MANAGER_H_
+#define NRF_802154_SEC_KEY_MANAGER_H_
 
 #include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#define FRAME_COUNTER_LENGTH 4
-#define KEY_LENGTH           16
-#define EXTENDED_ADDR_LENGTH 8
-#define SHORT_ADDR_LENGTH    2
-#define PAN_ID_LENGTH        2
 
 // As defined in 802.15.4-2015 Std Table 9-2
 typedef enum
@@ -136,4 +130,4 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
     uint8_t                                               * p_device_addr,
     nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * p_key_id_lookup_descriptor);
 
-#endif /* NRF_802154_KEY_MANAGER_H_ */
+#endif /* NRF_802154_SEC_KEY_MANAGER_H_ */
