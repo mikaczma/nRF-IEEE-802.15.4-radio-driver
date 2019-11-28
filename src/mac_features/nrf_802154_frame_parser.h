@@ -337,15 +337,15 @@ uint8_t nrf_802154_frame_parser_ie_header_offset_get(const uint8_t * p_frame);
 uint8_t nrf_802154_frame_parser_ie_header_length_get(const uint8_t * p_ie_header);
 
 /**
- * @brief Gets type ID of IE header
+ * @brief Gets type of Element ID of IE header
  *
  * @param[in] p_ie_header  Pointer to IE header
  *
- * @returns Type ID of IE header content
+ * @returns Element ID of IE header content
  * @returns Zero if IE header pointer is NULL
  *
  */
-uint8_t nrf_802154_frame_parser_ie_header_type_get(const uint8_t * p_ie_header);
+uint8_t nrf_802154_frame_parser_ie_header_elementid_get(const uint8_t * p_ie_header);
 
 /**
  * @brief Check if IE CSL header field is present in the provided frame
