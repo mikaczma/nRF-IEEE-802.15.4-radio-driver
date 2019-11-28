@@ -1,5 +1,4 @@
 /* Copyright (c) 2016-2019 Nordic Semiconductor ASA
- * Copyright (c) 2015 Nordic Semiconductor ASA and Luxoft Global Operations Gmbh.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
