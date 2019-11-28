@@ -37,15 +37,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+#include <assert.h>
 #include "nrf_802154_sec_key_manager.h"
+#include "nrf_802154_frame_parser.h"
 #include "../nrf_802154_pib.h"
 #include "../nrf_802154_const.h"
-
-#define FRAME_COUNTER_LENGTH 4                 ///< As defined in 802.15.4 Std - Chapter 9.4.2 & Table 9-10
-#define KEY_LENGTH           16                ///< As defined in 802.15.4 Std - Table 9-10
-#define EXTENDED_ADDR_LENGTH 8                 ///< As defined in 802.15.4 Std - Chapter 7.1
-#define SHORT_ADDR_LENGTH    2                 ///< As defined in 802.15.4 Std - Table 9-14
-#define PAN_ID_LENGTH        2                 ///< As defined in 802.15.4 Std - Table 9-14
 
 static nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * mp_key_id_lookup_list = NULL;
 static size_t m_key_id_lookup_list_length = 0; // Amount of entries in the lookup list
@@ -203,7 +199,6 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
             default:
                 assert(false);
                 break;
-
         }
     }
 

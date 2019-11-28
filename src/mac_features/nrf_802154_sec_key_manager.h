@@ -43,6 +43,12 @@
 extern "C" {
 #endif
 
+#define FRAME_COUNTER_LENGTH 4                 ///< As defined in 802.15.4 Std - Chapter 9.4.2 & Table 9-10
+#define KEY_LENGTH           16                ///< As defined in 802.15.4 Std - Table 9-10
+#define EXTENDED_ADDR_LENGTH 8                 ///< As defined in 802.15.4 Std - Chapter 7.1
+#define SHORT_ADDR_LENGTH    2                 ///< As defined in 802.15.4 Std - Table 9-14
+#define PAN_ID_LENGTH        2                 ///< As defined in 802.15.4 Std - Table 9-14
+
 // As defined in 802.15.4-2015 Std Table 9-2
 typedef enum
 {
@@ -105,7 +111,7 @@ typedef struct
 } nrf_802154_sec_key_manager_key_id_lookup_descriptor_t;
 
 /**
- * @brief   Set lookup list by higher layer
+ * @brief   Set lookup list from higher layer
  *
  * @note perform assignment of externally allocated lookup list
  *
