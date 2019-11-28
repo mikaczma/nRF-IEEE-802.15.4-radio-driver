@@ -172,6 +172,38 @@ const uint8_t * nrf_802154_pib_short_address_get(void);
 void nrf_802154_pib_short_address_set(const uint8_t * p_short_address);
 
 /**
+ * @brief Gets the extended address of coordinator.
+ *
+ * @returns Pointer to the buffer containing the extended address (8 bytes, little-endian).
+ */
+const uint8_t * nrf_802154_pib_coord_extended_address_get(void);
+
+/**
+ * @brief Sets the extended address of coordinator.
+ *
+ * @param[in]  p_coord_extended_address  Pointer to extended address (8 bytes, little-endian).
+ *
+ * This function makes a copy of the address.
+ */
+void nrf_802154_pib_coord_extended_address_set(const uint8_t * p_coord_extended_address);
+
+/**
+ * @brief Gets the short address of coordinator.
+ *
+ * @returns Pointer to the buffer containing the short address (2 bytes, little-endian).
+ */
+const uint8_t * nrf_802154_pib_coord_short_address_get(void);
+
+/**
+ * @brief Sets the short address of coordinator.
+ *
+ * @param[in]  p_coord_short_address  Pointer to the short address (2 bytes, little-endian).
+ *
+ * This function makes a copy of the address.
+ */
+void nrf_802154_pib_coord_short_address_set(const uint8_t * p_coord_short_address);
+
+/**
  * @brief Sets the radio CCA mode and threshold.
  *
  * @param[in] p_cca_cfg Pointer to the CCA configuration structure. Only fields relevant

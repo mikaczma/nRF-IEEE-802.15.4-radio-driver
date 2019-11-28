@@ -76,19 +76,21 @@ typedef struct
 
 typedef struct
 {
-    int8_t                  tx_power;                             ///< Transmit power.
-    uint8_t                 pan_id[PAN_ID_SIZE];                  ///< Pan Id of this node.
-    uint8_t                 short_addr[SHORT_ADDRESS_SIZE];       ///< Short Address of this node.
-    uint8_t                 extended_addr[EXTENDED_ADDRESS_SIZE]; ///< Extended Address of this node.
-    nrf_802154_cca_cfg_t    cca;                                  ///< CCA mode and thresholds.
-    bool                    promiscuous : 1;                      ///< Indicating if radio is in promiscuous mode.
-    bool                    auto_ack    : 1;                      ///< Indicating if auto ACK procedure is enabled.
-    bool                    pan_coord   : 1;                      ///< Indicating if radio is configured as the PAN coordinator.
-    uint8_t                 channel     : 5;                      ///< Channel on which the node receives messages.
-    nrf_802154_pib_coex_t   coex;                                 ///< Coex-related fields.
+    int8_t                  tx_power;                                   ///< Transmit power.
+    uint8_t                 pan_id[PAN_ID_SIZE];                        ///< Pan Id of this node.
+    uint8_t                 short_addr[SHORT_ADDRESS_SIZE];             ///< Short Address of this node.
+    uint8_t                 extended_addr[EXTENDED_ADDRESS_SIZE];       ///< Extended Address of this node.
+    uint8_t                 coord_short_addr[SHORT_ADDRESS_SIZE];       ///< Short Address of the coordinator.
+    uint8_t                 coord_extended_addr[EXTENDED_ADDRESS_SIZE]; ///< Extended Address of the coordinator.
+    nrf_802154_cca_cfg_t    cca;                                        ///< CCA mode and thresholds.
+    bool                    promiscuous : 1;                            ///< Indicating if radio is in promiscuous mode.
+    bool                    auto_ack    : 1;                            ///< Indicating if auto ACK procedure is enabled.
+    bool                    pan_coord   : 1;                            ///< Indicating if radio is configured as the PAN coordinator.
+    uint8_t                 channel     : 5;                            ///< Channel on which the node receives messages.
+    nrf_802154_pib_coex_t   coex;                                       ///< Coex-related fields.
 
 #if NRF_802154_CSMA_CA_ENABLED
-    nrf_802154_pib_csmaca_t csmaca;                               ///< CSMA-CA related fields.
+    nrf_802154_pib_csmaca_t csmaca;                                     ///< CSMA-CA related fields.
 
 #endif
 #if NRF_802154_IFS_ENABLED
@@ -227,6 +229,9 @@ void nrf_802154_pib_init(void)
     m_data.short_addr[0] = 0xfe;
     m_data.short_addr[1] = 0xff;
     memset(m_data.extended_addr, 0, sizeof(m_data.extended_addr));
+    m_data.coord_short_addr[0] = 0xff;
+    m_data.coord_short_addr[1] = 0xff;
+    memset(m_data.coord_extended_addr, 0, sizeof(m_data.coord_extended_addr));
 
     m_data.cca.mode           = NRF_802154_CCA_MODE_DEFAULT;
     m_data.cca.ed_threshold   = NRF_802154_CCA_ED_THRESHOLD_DEFAULT;
@@ -334,6 +339,26 @@ const uint8_t * nrf_802154_pib_short_address_get(void)
 void nrf_802154_pib_short_address_set(const uint8_t * p_short_address)
 {
     memcpy(m_data.short_addr, p_short_address, SHORT_ADDRESS_SIZE);
+}
+
+const uint8_t * nrf_802154_pib_coord_extended_address_get(void)
+{
+    return m_data.coord_extended_addr;
+}
+
+void nrf_802154_pib_coord_extended_address_set(const uint8_t * p_coord_extended_address)
+{
+    memcpy(m_data.coord_extended_addr, p_coord_extended_address, EXTENDED_ADDRESS_SIZE);
+}
+
+const uint8_t * nrf_802154_pib_coord_short_address_get(void)
+{
+    return m_data.coord_short_addr;
+}
+
+void nrf_802154_pib_coord_short_address_set(const uint8_t * p_coord_short_address)
+{
+    memcpy(m_data.coord_short_addr, p_coord_short_address, SHORT_ADDRESS_SIZE);
 }
 
 void nrf_802154_pib_cca_cfg_set(const nrf_802154_cca_cfg_t * p_cca_cfg)
