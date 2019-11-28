@@ -78,19 +78,19 @@
 #define FRAME_VERSION_2              0x20                                         ///< Bits containing the frame version 0b10.
 #define FRAME_VERSION_3              0x30                                         ///< Bits containing the frame version 0b11.
 
-#define IE_HEADER_LENGTH_OFFSET      0                                            ///< Byte containing the Length field in IE header content
-#define IE_HEADER_LENGTH_MASK        0x7f                                         ///< Mask of bits containing the length of an IE header content.
-#define IE_HEADER_TYPE_OFFSET_0      0                                            ///< Byte containing the lower bits of Type field of IE header
-#define IE_HEADER_TYPE_OFFSET_1      1                                            ///< Byte containing the higher bits of Type field of IE header
-#define IE_HEADER_TYPE_MASK_0        0x80                                         ///< Mask of bits containing the lower bits of Type field of IE header.
-#define IE_HEADER_TYPE_MASK_1        0x7f                                         ///< Mask of bits containing the higher bits of Type field of IE header.
+#define IE_HEADER_LENGTH_OFFSET      0                                            ///< Byte containing the Length field in IE header content - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_LENGTH_MASK        0x7f                                         ///< Mask of bits containing the length of an IE header content. - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_TYPE_OFFSET_0      0                                            ///< Byte containing the lower bits of Type field of IE header - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_TYPE_OFFSET_1      1                                            ///< Byte containing the higher bits of Type field of IE header - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_TYPE_MASK_0        0x80                                         ///< Mask of bits containing the lower bits of Type field of IE header. - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_TYPE_MASK_1        0x7f                                         ///< Mask of bits containing the higher bits of Type field of IE header. - according to 802.15.4-2015 Std Fig. 7-21
 #define IE_PRESENT_OFFSET            2                                            ///< Byte containing the IE Present bit.
 #define IE_PRESENT_BIT               0x02                                         ///< Bits containing the IE Present field.
 
-#define IE_HEADER_OCTETS             2                                            ///< Length of IE header without content in octets
-#define IE_HEADER_CSL_ID             0x1A                                         ///< ID of IE header for CSL
-#define IE_HEADER_TERMINATION_1_ID   0x7E                                         ///< ID of IE header for Header Termination 1
-#define IE_HEADER_TERMINATION_2_ID   0x7F                                         ///< ID of IE header for Header Termination 2
+#define IE_HEADER_OCTETS             2                                            ///< Length of IE header without content in octets  - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_CSL_ID             0x1A                                         ///< ID of IE header for CSL - according to 802.15.4-2015 Std Table 7-7
+#define IE_HEADER_TERMINATION_1_ID   0x7E                                         ///< ID of IE header for Header Termination 1 - according to 802.15.4-2015 Std Table 7-7
+#define IE_HEADER_TERMINATION_2_ID   0x7F                                         ///< ID of IE header for Header Termination 2 - according to 802.15.4-2015 Std Table 7-7
 
 #define KEY_ID_MODE_MASK             0x18                                         ///< Mask of bits containing Key Identifier Mode in the Security Control field.
 #define KEY_ID_MODE_0                0                                            ///< Bits containing the 0x00 Key Identifier Mode.
