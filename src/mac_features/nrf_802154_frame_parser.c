@@ -708,29 +708,7 @@ uint8_t nrf_802154_frame_parser_ie_header_elementid_get(const uint8_t * p_ie_hea
 
 bool nrf_802154_frame_parser_is_csl_ie_header_available(const uint8_t * p_frame)
 {
-    const uint8_t * p_ie_header = nrf_802154_frame_parser_ie_header_get(p_frame);
-
-    if (p_ie_header == NULL)
-    {
-        return false;
-    }
-
-    while ((nrf_802154_frame_parser_ie_header_elementid_get(p_ie_header) !=
-            IE_HEADER_TERMINATION_1_ID) &&
-           (nrf_802154_frame_parser_ie_header_elementid_get(p_ie_header) !=
-            IE_HEADER_TERMINATION_2_ID) &&
-           (p_ie_header < (p_frame + p_frame[PHR_OFFSET])))
-    {
-        if (nrf_802154_frame_parser_ie_header_elementid_get(p_ie_header) == IE_HEADER_CSL_ID)
-        {
-            return true;
-        }
-
-        p_ie_header +=
-            (nrf_802154_frame_parser_ie_header_length_get(p_ie_header) + IE_HEADER_OCTETS);
-    }
-
-    return false;
+    return nrf_802154_frame_parser_csl_ie_header_get(p_frame) != NULL;
 }
 
 const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_frame)
@@ -742,11 +720,11 @@ const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_fram
         return NULL;
     }
 
-    while ((nrf_802154_frame_parser_ie_header_elementid_get(p_ie_header) !=
-            IE_HEADER_TERMINATION_1_ID) &&
-           (nrf_802154_frame_parser_ie_header_elementid_get(p_ie_header) !=
-            IE_HEADER_TERMINATION_2_ID) &&
-           (p_ie_header < (p_frame + p_frame[PHR_OFFSET])))
+    uint8_t ie_header_elementid = nrf_802154_frame_parser_ie_header_elementid_get(p_ie_header);
+
+    while ((p_ie_header < (p_frame + p_frame[PHR_OFFSET]) &&
+            (ie_header_elementid != IE_HEADER_TERMINATION_1_ID) &&
+            (ie_header_elementid != IE_HEADER_TERMINATION_2_ID)))
     {
         if (nrf_802154_frame_parser_ie_header_elementid_get(p_ie_header) == IE_HEADER_CSL_ID)
         {
@@ -755,6 +733,7 @@ const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_fram
 
         p_ie_header +=
             (nrf_802154_frame_parser_ie_header_length_get(p_ie_header) + IE_HEADER_OCTETS);
+        ie_header_elementid = nrf_802154_frame_parser_ie_header_elementid_get(p_ie_header);
     }
 
     return NULL;
