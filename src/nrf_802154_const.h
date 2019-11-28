@@ -80,10 +80,10 @@
 
 #define IE_HEADER_LENGTH_OFFSET      0                                            ///< Byte containing the Length field in IE header content - according to 802.15.4-2015 Std Fig. 7-21
 #define IE_HEADER_LENGTH_MASK        0x7f                                         ///< Mask of bits containing the length of an IE header content. - according to 802.15.4-2015 Std Fig. 7-21
-#define IE_HEADER_TYPE_OFFSET_0      0                                            ///< Byte containing the lower bits of Type field of IE header - according to 802.15.4-2015 Std Fig. 7-21
-#define IE_HEADER_TYPE_OFFSET_1      1                                            ///< Byte containing the higher bits of Type field of IE header - according to 802.15.4-2015 Std Fig. 7-21
-#define IE_HEADER_TYPE_MASK_0        0x80                                         ///< Mask of bits containing the lower bits of Type field of IE header. - according to 802.15.4-2015 Std Fig. 7-21
-#define IE_HEADER_TYPE_MASK_1        0x7f                                         ///< Mask of bits containing the higher bits of Type field of IE header. - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_ELEMENTID_OFFSET_0      0                                            ///< Byte containing the lower bits of Type field of IE header - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_ELEMENTID_OFFSET_1      1                                            ///< Byte containing the higher bits of Type field of IE header - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_ELEMENTID_MASK_0        0x80                                         ///< Mask of bits containing the lower bits of Type field of IE header. - according to 802.15.4-2015 Std Fig. 7-21
+#define IE_HEADER_ELEMENTID_MASK_1        0x7f                                         ///< Mask of bits containing the higher bits of Type field of IE header. - according to 802.15.4-2015 Std Fig. 7-21
 #define IE_PRESENT_OFFSET            2                                            ///< Byte containing the IE Present bit.
 #define IE_PRESENT_BIT               0x02                                         ///< Bits containing the IE Present field.
 
