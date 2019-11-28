@@ -60,7 +60,7 @@ static uint32_t nrf_802154_csl_phase_injector_phase_symbols_get(void)
 /**
  * @brief   Update CSL Phase field
  *
- * @param[in] p_frame Pointer to IE CSL header
+ * @param[in] p_ie_csl_header Pointer to IE CSL header
  * @param[in] phase   Value of actual CSL phase given in symbols
  */
 static void nrf_802154_csl_phase_injector_phase_update(uint8_t * p_ie_csl_header, uint16_t phase)
