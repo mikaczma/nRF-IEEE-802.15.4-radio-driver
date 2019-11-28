@@ -137,9 +137,11 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
 
                 case 0x02: // fallback on purpose as described in 802.15.4-2015 Std 9.2.2c)
                 case 0x03:
-                    if ((key_id_mode == mp_key_id_lookup_list[i].key_id_mode) && (key_index == mp_key_id_lookup_list[i].key_index))
+                    if ((key_id_mode == mp_key_id_lookup_list[i].key_id_mode) &&
+                        (key_index == mp_key_id_lookup_list[i].key_index))
                     {
                         uint8_t key_source_length = 0;
+
                         switch (mp_key_id_lookup_list[i].key_id_mode)
                         {
                             case 0x02:
@@ -149,12 +151,13 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                             case 0x03:
                                 key_source_length = 8;
                                 break;
-                            
+
                             default:
                                 break;
                         }
 
-                        if (strncmp(key_source, mp_key_id_lookup_list[i].key_source, key_source_length) == 0)
+                        if (strncmp(key_source, mp_key_id_lookup_list[i].key_source,
+                                    key_source_length) == 0)
                         {
                             key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
                             return true;
@@ -168,6 +171,6 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
             }
         }
     }
-    
+
     return false;
 }
