@@ -40,31 +40,32 @@
 #include "nrf_802154_sec_key_manager.h"
 #include "../nrf_802154_const.h"
 
-nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * mp_key_id_lookup_list = NULL;
-uint8_t m_mac_pan_id[PAN_ID_LENGTH];
-uint8_t m_mac_coord_extended_addr[EXTENDED_ADDR_LENGTH];
-uint8_t m_mac_coord_short_addr[SHORT_ADDR_LENGTH];
+static nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * mp_key_id_lookup_list = NULL;
+static uint8_t m_mac_pan_id[PAN_ID_LENGTH];
+static uint8_t m_mac_coord_extended_addr[EXTENDED_ADDR_LENGTH];
+static uint8_t m_mac_coord_short_addr[SHORT_ADDR_LENGTH];
 
 bool nrf_802154_sec_key_manager_lookup_procedure(
     const uint8_t                                         * p_frame,
     uint8_t                                                 key_id_mode,
-    uint8_t                                               * key_source,
+    uint8_t                                               * p_key_source,
     uint8_t                                                 key_index,
     sec_key_device_addr_mode_t                              device_addr_mode,
-    uint8_t                                               * device_pan_id,
-    uint8_t                                               * device_addr,
-    nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * key_id_lookup_descriptor)
+    uint8_t                                               * p_device_pan_id,
+    uint8_t                                               * p_device_addr,
+    nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * p_key_id_lookup_descriptor)
 {
     if (mp_key_id_lookup_list != NULL)
     {
-        for (size_t i = 0; i < (sizeof(mp_key_id_lookup_list) / sizeof(mp_key_id_lookup_list[0])); i++)
+        for (size_t i = 0; i < (sizeof(mp_key_id_lookup_list) / sizeof(mp_key_id_lookup_list[0]));
+             i++)
         {
             switch (mp_key_id_lookup_list[i].key_id_mode)
             {
                 case 0x00:
-                    if ((device_addr_mode == NONE) || (device_pan_id == NULL))
+                    if ((device_addr_mode == NONE) || (p_device_pan_id == NULL))
                     {
-                        memcpy(device_pan_id, mp_mac_pan_id, PAN_ID_LENGTH);
+                        memcpy(p_device_pan_id, m_mac_pan_id, PAN_ID_LENGTH);
                     }
                     uint8_t frame_type = (p_frame[FRAME_TYPE_OFFSET] & FRAME_TYPE_MASK);
 
@@ -72,7 +73,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                     {
                         if (frame_type == FRAME_TYPE_BEACON)
                         {
-                            memcpy(device_addr, mp_mac_coord_extended_addr, EXTENDED_ADDR_LENGTH);
+                            memcpy(p_device_addr, m_mac_coord_extended_addr, EXTENDED_ADDR_LENGTH);
                         }
                         else
                         {
@@ -84,18 +85,18 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                             if ((m_mac_coord_short_addr[0] == 0xff) &&
                                 (m_mac_coord_short_addr[1] == 0xfe))
                             {
-                                memcpy(device_addr, mp_mac_coord_extended_addr,
+                                memcpy(p_device_addr, m_mac_coord_extended_addr,
                                        EXTENDED_ADDR_LENGTH);
                             }
                             else
                             {
-                                memcpy(device_addr, m_mac_coord_short_addr, SHORT_ADDR_LENGTH);
+                                memcpy(p_device_addr, m_mac_coord_short_addr, SHORT_ADDR_LENGTH);
                             }
                         }
                     }
 
                     if ((device_addr_mode == mp_key_id_lookup_list[i].key_device_addr_mode) &&
-                        (strncmp(device_pan_id, mp_key_id_lookup_list[i].key_device_pan_id,
+                        (strncmp(p_device_pan_id, mp_key_id_lookup_list[i].key_device_pan_id,
                                  PAN_ID_LENGTH) == 0))
                     {
                         uint8_t addr_length = 0;
@@ -115,10 +116,10 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                                 break;
                         }
 
-                        if (strncmp(device_addr, mp_key_id_lookup_list[i].key_device_address,
+                        if (strncmp(p_device_addr, mp_key_id_lookup_list[i].key_device_address,
                                     addr_length) == 0)
                         {
-                            key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
+                            p_key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
                             return true;
                         }
                     }
@@ -129,7 +130,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                     {
                         if (mp_key_id_lookup_list[i].key_id_mode == 0x01)
                         {
-                            key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
+                            p_key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
                             return true;
                         }
                     }
@@ -156,10 +157,10 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                                 break;
                         }
 
-                        if (strncmp(key_source, mp_key_id_lookup_list[i].key_source,
+                        if (strncmp(p_key_source, mp_key_id_lookup_list[i].key_source,
                                     key_source_length) == 0)
                         {
-                            key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
+                            p_key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
                             return true;
                         }
                     }
@@ -173,5 +174,6 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
         }
     }
 
+    p_key_id_lookup_descriptor = NULL;
     return false;
 }

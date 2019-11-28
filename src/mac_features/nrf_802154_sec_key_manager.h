@@ -49,6 +49,7 @@ extern "C" {
 #define SHORT_ADDR_LENGTH    2
 #define PAN_ID_LENGTH        2
 
+// As defined in 802.15.4-2015 Std Table 9-2
 typedef enum
 {
     NONE     = 0x00,
@@ -56,6 +57,7 @@ typedef enum
     EXTENDED = 0x03
 } sec_key_device_addr_mode_t;
 
+// IE type as defined in 802.15.4-2015 Std Chapter 7.4.1
 typedef enum
 {
     HEADER,
@@ -64,14 +66,14 @@ typedef enum
     NESTED_LONG
 } sec_key_ie_t;
 
-// As defined in Table 9-13
+// As defined in 802.15.4-2015 Std Table 9-13
 typedef struct
 {
     sec_key_ie_t key_ie_type;
     uint8_t      key_ie_id;
 } nrf_802154_sec_key_manager_key_ie_usage_descriptor_t;
 
-// As defined in Table 9-12
+// As defined in 802.15.4-2015 Std Table 9-12
 typedef struct
 {
     uint8_t key_usage_frame_type;
@@ -79,14 +81,14 @@ typedef struct
 
 } nrf_802154_sec_key_manager_key_usage_descriptor_t;
 
-// As defined in Table 9-11
+// As defined in 802.15.4-2015 Std Table 9-11
 typedef struct
 {
     uint8_t device_extended_address[EXTENDED_ADDR_LENGTH];
     uint8_t device_frame_counter[FRAME_COUNTER_LENGTH];
 } nrf_802154_sec_key_manager_key_device_frame_counter_t;
 
-// As defined in Table 9-10
+// As defined in 802.15.4-2015 Std Table 9-10
 typedef struct
 {
     nrf_802154_sec_key_manager_key_usage_descriptor_t     * key_usage_descriptor_list;
@@ -96,7 +98,7 @@ typedef struct
     nrf_802154_sec_key_manager_key_device_frame_counter_t * key_device_frame_counter_list;
 } nrf_802154_sec_key_manager_key_descriptor_t;
 
-// As defined in Table 9-9
+// As defined in 802.15.4-2015 Std Table 9-9
 typedef struct
 {
     uint8_t                                     key_id_mode;
@@ -109,11 +111,29 @@ typedef struct
 } nrf_802154_sec_key_manager_key_id_lookup_descriptor_t;
 
 /**
- * @brief   Update CSL Phase field in IE header
- * IEEE std 802.15.4-2015
+ * @brief   KeyDescriptor lookup procedure
+ * IEEE std 802.15.4-2015 - Chapter 9.2.2
  *
- * @param[in] p_ie_csl_header Pointer to IE CSL header
+ * @param[in] p_frame - pointer to frame for which will Key Desriptor is get
+ * @param[in] key_id_mode - value of given KeyIdMode as defined in 802.15.4-2015 Std Table 9-7
+ * @param[in] p_key_source - pointer to KeySource as defined in 802.15.4-2015 Std Chapter 9.4.3.1
+ * @param[in] key_index - value of given KeyIndex as defined in 802.15.4-2015 Std Chapter 9.4.3.2
+ * @param[in] device_addr_mode - value of given DeviceAddressingMode as defined in 802.15.4-2015 Std Table 9-2
+ * @param[in] p_device_pan_id - pointer to given PAN ID as specified in 802.15.4-2015 Std Table 9-9
+ * @param[in] p_device_addr - pointer to given Device Address as specified in 802.15.4-2015 Std Table 9-9
+ * @param[out] p_key_id_lookup_descriptor - pointer to requested KeyDescriptor as defined in 802.15.4-2015 Std Table 9-10
+ *
+ * @retval true Status of procedure is SUCCESS and key descriptor is given
+ * @retval false Status of procedure is FAILED and key descriptor is NULL
  */
-bool nrf_802154_csl_phase_injector_ie_csl_header_phase_update(uint8_t * p_ie_csl_header);
+bool nrf_802154_sec_key_manager_lookup_procedure(
+    const uint8_t                                         * p_frame,
+    uint8_t                                                 key_id_mode,
+    uint8_t                                               * p_key_source,
+    uint8_t                                                 key_index,
+    sec_key_device_addr_mode_t                              device_addr_mode,
+    uint8_t                                               * p_device_pan_id,
+    uint8_t                                               * p_device_addr,
+    nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * p_key_id_lookup_descriptor);
 
 #endif /* NRF_802154_KEY_MANAGER_H_ */

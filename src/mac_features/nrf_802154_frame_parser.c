@@ -703,7 +703,8 @@ uint8_t nrf_802154_frame_parser_ie_header_elementid_get(const uint8_t * p_ie_hea
         return 0;
     }
 
-    uint8_t ie_header_type = (p_ie_header[IE_HEADER_ELEMENTID_OFFSET_0] & IE_HEADER_ELEMENTID_MASK_0) >> 7;
+    uint8_t ie_header_type =
+        (p_ie_header[IE_HEADER_ELEMENTID_OFFSET_0] & IE_HEADER_ELEMENTID_MASK_0) >> 7;
 
     ie_header_type |= (p_ie_header[IE_HEADER_ELEMENTID_OFFSET_1] & IE_HEADER_ELEMENTID_MASK_1) << 1;
 
