@@ -49,7 +49,7 @@
 /**
  * @brief Gets the time of the next receive delayed timeslot trigger time in symbols.
  * @note This code assumes that higher level MAC schedulded delayed timeslot and it is its responsibility
- * 
+ *
  * @returns  Amount of symbols for the next receive delayed timeslot trigger time.
  */
 static uint32_t nrf_802154_csl_phase_injector_phase_symbols_get(void)
