@@ -57,7 +57,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
 {
     if (mp_key_id_lookup_list != NULL)
     {
-        for (int i = 0; i < (sizeof(mp_key_id_lookup_list) / sizeof(mp_key_id_lookup_list[0])); i++)
+        for (size_t i = 0; i < (sizeof(mp_key_id_lookup_list) / sizeof(mp_key_id_lookup_list[0])); i++)
         {
             switch (mp_key_id_lookup_list[i].key_id_mode)
             {
