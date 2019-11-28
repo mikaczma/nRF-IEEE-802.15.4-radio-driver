@@ -55,14 +55,14 @@ void nrf_802154_sec_key_manager_lookup_list_set(
 }
 
 bool nrf_802154_sec_key_manager_lookup_procedure(
-    const uint8_t                                         * p_frame,
-    uint8_t                                                 key_id_mode,
-    uint8_t                                               * p_key_source,
-    uint8_t                                                 key_index,
-    sec_key_device_addr_mode_t                              device_addr_mode,
-    uint8_t                                               * p_device_pan_id,
-    uint8_t                                               * p_device_addr,
-    nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * p_key_id_lookup_descriptor)
+    const uint8_t                               * p_frame,
+    uint8_t                                       key_id_mode,
+    uint8_t                                     * p_key_source,
+    uint8_t                                       key_index,
+    sec_key_device_addr_mode_t                    device_addr_mode,
+    uint8_t                                     * p_device_pan_id,
+    uint8_t                                     * p_device_addr,
+    nrf_802154_sec_key_manager_key_descriptor_t * p_key_descriptor)
 {
     if (mp_key_id_lookup_list != NULL)
     {
@@ -138,7 +138,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                             if (memcmp(p_device_addr, mp_key_id_lookup_list[i].key_device_address,
                                        addr_length) == 0)
                             {
-                                p_key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
+                                p_key_descriptor = &(mp_key_id_lookup_list[i].key_descriptor);
                                 return true;
                             }
                         }
@@ -155,7 +155,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                     {
                         if (mp_key_id_lookup_list[i].key_id_mode == 0x01)
                         {
-                            p_key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
+                            p_key_descriptor = &(mp_key_id_lookup_list[i].key_descriptor);
                             return true;
                         }
                     }
@@ -189,7 +189,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                         if (memcmp(p_key_source, mp_key_id_lookup_list[i].key_source,
                                    key_source_length) == 0)
                         {
-                            p_key_id_lookup_descriptor = &mp_key_id_lookup_list[i];
+                            p_key_descriptor = &(mp_key_id_lookup_list[i].key_descriptor);
                             return true;
                         }
                     }
@@ -202,6 +202,6 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
         }
     }
 
-    p_key_id_lookup_descriptor = NULL;
+    p_key_descriptor = NULL;
     return false;
 }

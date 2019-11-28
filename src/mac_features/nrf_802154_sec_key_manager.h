@@ -43,11 +43,11 @@
 extern "C" {
 #endif
 
-#define FRAME_COUNTER_LENGTH 4                 ///< As defined in 802.15.4 Std - Chapter 9.4.2 & Table 9-10
-#define KEY_LENGTH           16                ///< As defined in 802.15.4 Std - Table 9-10
-#define EXTENDED_ADDR_LENGTH 8                 ///< As defined in 802.15.4 Std - Chapter 7.1
-#define SHORT_ADDR_LENGTH    2                 ///< As defined in 802.15.4 Std - Table 9-14
-#define PAN_ID_LENGTH        2                 ///< As defined in 802.15.4 Std - Table 9-14
+#define FRAME_COUNTER_LENGTH 4  ///< As defined in 802.15.4 Std - Chapter 9.4.2 & Table 9-10
+#define KEY_LENGTH           16 ///< As defined in 802.15.4 Std - Table 9-10
+#define EXTENDED_ADDR_LENGTH 8  ///< As defined in 802.15.4 Std - Chapter 7.1
+#define SHORT_ADDR_LENGTH    2  ///< As defined in 802.15.4 Std - Table 9-14
+#define PAN_ID_LENGTH        2  ///< As defined in 802.15.4 Std - Table 9-14
 
 // As defined in 802.15.4-2015 Std Table 9-2
 typedef enum
@@ -139,13 +139,13 @@ void nrf_802154_sec_key_manager_lookup_list_set(
  * @retval false Status of procedure is FAILED and key descriptor is NULL
  */
 bool nrf_802154_sec_key_manager_lookup_procedure(
-    const uint8_t                                         * p_frame,
-    uint8_t                                                 key_id_mode,
-    uint8_t                                               * p_key_source,
-    uint8_t                                                 key_index,
-    sec_key_device_addr_mode_t                              device_addr_mode,
-    uint8_t                                               * p_device_pan_id,
-    uint8_t                                               * p_device_addr,
-    nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * p_key_id_lookup_descriptor);
+    const uint8_t                               * p_frame,
+    uint8_t                                       key_id_mode,
+    uint8_t                                     * p_key_source,
+    uint8_t                                       key_index,
+    sec_key_device_addr_mode_t                    device_addr_mode,
+    uint8_t                                     * p_device_pan_id,
+    uint8_t                                     * p_device_addr,
+    nrf_802154_sec_key_manager_key_descriptor_t * p_key_descriptor);
 
 #endif /* NRF_802154_SEC_KEY_MANAGER_H_ */
