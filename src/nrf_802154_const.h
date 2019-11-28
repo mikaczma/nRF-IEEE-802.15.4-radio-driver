@@ -78,11 +78,16 @@
 #define FRAME_VERSION_2              0x20                                         ///< Bits containing the frame version 0b10.
 #define FRAME_VERSION_3              0x30                                         ///< Bits containing the frame version 0b11.
 
-#define IE_HEADER_LENGTH_MASK        0x3f                                         ///< Mask of bits containing the length of an IE header content.
+#define IE_HEADER_LENGTH_OFFSET      0                                            ///< Byte containing the Length field in IE header content
+#define IE_HEADER_LENGTH_MASK        0x7f                                         ///< Mask of bits containing the length of an IE header content.
+#define IE_HEADER_TYPE_OFFSET_0      0                                            ///< Byte containing the lower bits of Type field of IE header
+#define IE_HEADER_TYPE_OFFSET_1      1                                            ///< Byte containing the higher bits of Type field of IE header
+#define IE_HEADER_TYPE_MASK_0        0x80                                         ///< Mask of bits containing the lower bits of Type field of IE header.
+#define IE_HEADER_TYPE_MASK_1        0x7f                                         ///< Mask of bits containing the higher bits of Type field of IE header.
 #define IE_PRESENT_OFFSET            2                                            ///< Byte containing the IE Present bit.
 #define IE_PRESENT_BIT               0x02                                         ///< Bits containing the IE Present field.
 
-#define IE_HEADER_BYTES              2                                            ///< Length of IE header without content
+#define IE_HEADER_OCTETS             2                                            ///< Length of IE header without content in octets
 #define IE_HEADER_CSL_ID             0x1A                                         ///< ID of IE header for CSL
 #define IE_HEADER_TERMINATION_1_ID   0x7E                                         ///< ID of IE header for Header Termination 1
 #define IE_HEADER_TERMINATION_2_ID   0x7F                                         ///< ID of IE header for Header Termination 2
