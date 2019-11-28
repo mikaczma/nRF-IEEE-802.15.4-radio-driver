@@ -166,6 +166,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                     break;
 
                 default:
+                    assert(false);
                     break;
 
             }
