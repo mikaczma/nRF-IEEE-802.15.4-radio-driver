@@ -105,6 +105,18 @@ typedef struct
 } nrf_802154_sec_key_manager_key_id_lookup_descriptor_t;
 
 /**
+ * @brief   Set lookup list by higher layer
+ *
+ * @note perform assignment of externally allocated lookup list
+ *
+ * @param[in] p_key_id_lookup_list - Pointer to externally allocated key lookup list
+ * @param[in] list_length - Value of number of entries in the list
+ */
+void nrf_802154_sec_key_manager_lookup_list_set(
+    nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * p_key_id_lookup_list,
+    size_t                                                  list_lenght);
+
+/**
  * @brief   KeyDescriptor lookup procedure
  * IEEE std 802.15.4-2015 - Chapter 9.2.2
  *
