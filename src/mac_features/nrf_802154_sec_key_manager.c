@@ -113,50 +113,47 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
         {
             case 0x00: // Chapter 9.2.2a)
 
+                // Data preparation
+                if ((device_addr_mode == NONE) || (p_device_pan_id == NULL)) // Chapter 9.2.2a)1)
+                {
+                    p_device_pan_id = (uint8_t *)nrf_802154_pib_pan_id_get();
+                }
+
+                uint8_t frame_type = nrf_802154_frame_parser_frame_type_get(p_frame);
+
+                if ((device_addr_mode == NONE))
+                {
+                    if (frame_type == FRAME_TYPE_BEACON) // Chapter 9.2.2a)2)
+                    {
+                        p_device_addr = nrf_802154_pib_coord_extended_address_get();
+                    }
+                    else // Chapter 9.2.2a)3)
+                    {
+                        uint8_t coord_short_addr_compare[SHORT_ADDR_LENGTH] = {0xff, 0xff};  // Check coord_short_addr = 0xfffe
+
+                        if (memcmp(nrf_802154_pib_coord_short_address_get(),
+                                    coord_short_addr_compare, SHORT_ADDR_LENGTH) == 0) // Chapter 9.2.2a)3)iii)
+                        {
+                            return false;
+                        }
+                        coord_short_addr_compare[0] = 0xfe;                           // Check coord_short_addr = 0xfffe
+                        if (memcmp(nrf_802154_pib_coord_short_address_get(),
+                                    coord_short_addr_compare, SHORT_ADDR_LENGTH) == 0) // Chapter 9.2.2a)3)i)
+                        {
+                            p_device_addr = nrf_802154_pib_coord_extended_address_get();
+                        }
+                        else // Chapter 9.2.2a)3)ii)
+                        {
+                            p_device_addr = nrf_802154_pib_coord_short_address_get();
+                        }
+                    }
+                }
+
+                // Data compare
                 for (size_t i = 0; i < m_key_id_lookup_list_length; i++)
                 {
                     if (mp_key_id_lookup_list[i].key_id_mode == 0x00)
                     {
-                        if ((device_addr_mode == NONE) || (p_device_pan_id == NULL)) // Chapter 9.2.2a)1)
-                        {
-                            p_device_pan_id = (uint8_t *)nrf_802154_pib_pan_id_get();
-                        }
-
-                        uint8_t frame_type = nrf_802154_frame_parser_frame_type_get(p_frame);
-
-                        if ((device_addr_mode == NONE))
-                        {
-                            if (frame_type == FRAME_TYPE_BEACON) // Chapter 9.2.2a)2)
-                            {
-                                memcpy(p_device_addr,
-                                       nrf_802154_pib_coord_extended_address_get(),
-                                       EXTENDED_ADDR_LENGTH);
-                            }
-                            else // Chapter 9.2.2a)3)
-                            {
-                                uint8_t coord_short_addr_compare[SHORT_ADDR_LENGTH] = {0xff, 0xff};  // Check coord_short_addr = 0xfffe
-
-                                if (memcmp(nrf_802154_pib_coord_short_address_get(),
-                                           coord_short_addr_compare, SHORT_ADDR_LENGTH) == 0) // Chapter 9.2.2a)3)iii)
-                                {
-                                    return false;
-                                }
-                                coord_short_addr_compare[0] = 0xfe;                      // Check coord_short_addr = 0xfffe
-                                if (memcmp(nrf_802154_pib_coord_short_address_get(),
-                                           coord_short_addr_compare, SHORT_ADDR_LENGTH) == 0) // Chapter 9.2.2a)3)i)
-                                {
-                                    memcpy(p_device_addr,
-                                           nrf_802154_pib_coord_extended_address_get(),
-                                           EXTENDED_ADDR_LENGTH);
-                                }
-                                else // Chapter 9.2.2a)3)ii)
-                                {
-                                    memcpy(p_device_addr, nrf_802154_pib_coord_short_address_get(),
-                                           SHORT_ADDR_LENGTH);
-                                }
-                            }
-                        }
-
                         if ((device_addr_mode == mp_key_id_lookup_list[i].key_device_addr_mode) &&
                             (memcmp(p_device_pan_id, mp_key_id_lookup_list[i].key_device_pan_id,
                                     PAN_ID_LENGTH) == 0)) // Chapter 9.2.2a)4)
