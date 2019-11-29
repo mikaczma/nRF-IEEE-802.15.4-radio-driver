@@ -519,6 +519,21 @@ void nrf_802154_encrypt_aes_ccm_auth_transform_trigger(const uint8_t * p_frame)
     }
 }
 
+/**
+ * @brief Copy blocks of memory in reverse order
+ *
+ * @param[out] p_dst - pointer to destination buffer
+ * @param[in] p_src - pointer to source buffer
+ * @param[in] n - length of data block
+ */
+static inline void memcpy_rev(void * p_dst, void * p_src, size_t n)
+{
+    for (size_t i = 0; i < n; i++)
+    {
+        p_dst[i] = p_src[n - 1 - i];
+    }
+}
+
 bool nrf_802154_encrypt_nonce_generate(const uint8_t * p_frame, bool is_tsch_mode,
                                        uint8_t * p_nonce)
 {
@@ -526,10 +541,6 @@ bool nrf_802154_encrypt_nonce_generate(const uint8_t * p_frame, bool is_tsch_mod
     {
         return false;
     }
-
-    // uint8_t nonce[NRF_802154_ENCRYPT_NONCE_SIZE];
-
-    // memset(nonce, 0, NRF_802154_ENCRYPT_NONCE_SIZE);
 
     nrf_802154_frame_parser_mhr_data_t mhr_data;
 
@@ -546,23 +557,12 @@ bool nrf_802154_encrypt_nonce_generate(const uint8_t * p_frame, bool is_tsch_mod
         {
             return false;
         }
-
-        p_nonce[0] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 1];
-        p_nonce[1] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 2];
-        p_nonce[2] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 3];
-        p_nonce[3] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 4];
-        p_nonce[4] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 5];
-        p_nonce[5] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 6];
-        p_nonce[6] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 7];
-        p_nonce[7] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 8];
+        memcpy_rev(p_nonce, mhr_data.p_src_addr, EXTENDED_ADDRESS_SIZE);
 
         const uint8_t * frame_counter = nrf_802154_frame_parser_frame_counter_get(p_frame);
 
         // Byte order for Frame Counter gets reversed as defined in 802.15.4-2015 Std Chapters 9.3.1 and Annex B.2
-        p_nonce[0 + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 1];
-        p_nonce[1 + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 2];
-        p_nonce[2 + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 3];
-        p_nonce[3 + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 4];
+        memcpy_rev((p_nonce + EXTENDED_ADDRESS_SIZE), frame_counter, FRAME_COUNTER_SIZE);
 
         p_nonce[NRF_802154_ENCRYPT_NONCE_SIZE - 1] = nrf_802154_frame_parser_security_level_get(
             mhr_data.p_sec_ctrl);
