@@ -178,7 +178,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                             if (memcmp(p_device_addr, mp_key_id_lookup_list[i].key_device_address,
                                        addr_length) == 0)
                             {
-                                pp_key_descriptor = &(mp_key_id_lookup_list[i].key_descriptor);
+                                *pp_key_descriptor = &(mp_key_id_lookup_list[i].key_descriptor);
                                 return true;
                             }
                         }
@@ -195,7 +195,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                     {
                         if (mp_key_id_lookup_list[i].key_id_mode == 0x01)
                         {
-                            pp_key_descriptor = &(mp_key_id_lookup_list[i].key_descriptor);
+                            *pp_key_descriptor = &(mp_key_id_lookup_list[i].key_descriptor);
                             return true;
                         }
                     }
@@ -229,7 +229,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                         if (memcmp(p_key_source, mp_key_id_lookup_list[i].key_source,
                                    key_source_length) == 0)
                         {
-                            pp_key_descriptor = &(mp_key_id_lookup_list[i].key_descriptor);
+                            *pp_key_descriptor = &(mp_key_id_lookup_list[i].key_descriptor);
                             return true;
                         }
                     }
@@ -237,11 +237,10 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                 break;
 
             default:
-                assert(false);
                 break;
         }
     }
 
-    pp_key_descriptor = NULL;
+    *pp_key_descriptor = NULL;
     return false;
 }
