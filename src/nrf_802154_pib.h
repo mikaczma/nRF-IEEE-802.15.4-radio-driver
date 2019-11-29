@@ -172,14 +172,14 @@ const uint8_t * nrf_802154_pib_short_address_get(void);
 void nrf_802154_pib_short_address_set(const uint8_t * p_short_address);
 
 /**
- * @brief Gets the extended address of coordinator.
+ * @brief Gets the macCoordExtendedAddress as defined in 802.15.4-2015 Std Table 8-81.
  *
  * @returns Pointer to the buffer containing the extended address (8 bytes, little-endian).
  */
 const uint8_t * nrf_802154_pib_coord_extended_address_get(void);
 
 /**
- * @brief Sets the extended address of coordinator.
+ * @brief Sets the  macCoordExtendedAddress as defined in 802.15.4-2015 Std Table 8-81.
  *
  * @param[in]  p_coord_extended_address  Pointer to extended address (8 bytes, little-endian).
  *
@@ -188,14 +188,14 @@ const uint8_t * nrf_802154_pib_coord_extended_address_get(void);
 void nrf_802154_pib_coord_extended_address_set(const uint8_t * p_coord_extended_address);
 
 /**
- * @brief Gets the short address of coordinator.
+ * @brief Gets the macCoordShortAddress as defined in 802.15.4-2015 Std Table 8-81.
  *
  * @returns Pointer to the buffer containing the short address (2 bytes, little-endian).
  */
 const uint8_t * nrf_802154_pib_coord_short_address_get(void);
 
 /**
- * @brief Sets the short address of coordinator.
+ * @brief Sets the macCoordShortAddress as defined in 802.15.4-2015 Std Table 8-81.
  *
  * @param[in]  p_coord_short_address  Pointer to the short address (2 bytes, little-endian).
  *

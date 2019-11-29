@@ -527,37 +527,46 @@ bool nrf_802154_encrypt_nonce_generate(const uint8_t * p_frame, bool is_tsch_mod
         return false;
     }
 
-    uint8_t nonce[NRF_802154_ENCRYPT_NONCE_SIZE];
+    // uint8_t nonce[NRF_802154_ENCRYPT_NONCE_SIZE];
 
-    memset(nonce, 0, NRF_802154_ENCRYPT_NONCE_SIZE);
+    // memset(nonce, 0, NRF_802154_ENCRYPT_NONCE_SIZE);
 
     nrf_802154_frame_parser_mhr_data_t mhr_data;
 
     nrf_802154_frame_parser_mhr_parse(p_frame, &mhr_data);
 
-    if (!is_tsch_mode)
+    if (!is_tsch_mode) // TODO: implement nonce generation if device is running in TSCH mode
     {
         if (mhr_data.src_addr_size != EXTENDED_ADDRESS_SIZE)
         {
             return false;
         }
 
-        for (uint8_t i = 0; i < EXTENDED_ADDRESS_SIZE; i++)
+        if (mhr_data.p_sec_ctrl == NULL)
         {
-            nonce[i] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 1 - i];
+            return false;
         }
+
+        p_nonce[0] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 1];
+        p_nonce[1] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 2];
+        p_nonce[2] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 3];
+        p_nonce[3] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 4];
+        p_nonce[4] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 5];
+        p_nonce[5] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 6];
+        p_nonce[6] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 7];
+        p_nonce[7] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 8];
 
         const uint8_t * frame_counter = nrf_802154_frame_parser_frame_counter_get(p_frame);
 
-        for (uint8_t i = 0; i < FRAME_COUNTER_SIZE; i++)
-        {
-            nonce[i + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 1 - i];
-        }
+        // Byte order for Frame Counter gets reversed as defined in 802.15.4-2015 Std Chapters 9.3.1 and Annex B.2
+        p_nonce[0 + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 1];
+        p_nonce[1 + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 2];
+        p_nonce[2 + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 3];
+        p_nonce[3 + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 4];
 
-        nonce[NRF_802154_ENCRYPT_NONCE_SIZE - 1] = nrf_802154_frame_parser_security_level_get(
+        p_nonce[NRF_802154_ENCRYPT_NONCE_SIZE - 1] = nrf_802154_frame_parser_security_level_get(
             mhr_data.p_sec_ctrl);
 
-        memcpy(p_nonce, nonce, NRF_802154_ENCRYPT_NONCE_SIZE);
         return true;
     }
 

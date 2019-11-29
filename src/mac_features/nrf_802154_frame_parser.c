@@ -750,9 +750,9 @@ uint8_t nrf_802154_frame_parser_frame_type_get(const uint8_t * p_frame)
     return frame_type_get(p_frame);
 }
 
-uint8_t nrf_802154_frame_parser_security_level_get(const uint8_t * p_security_field)
+uint8_t nrf_802154_frame_parser_security_level_get(const uint8_t * p_security_control_field)
 {
-    return (*p_security_field) & SECURITY_LEVEL_MASK;
+    return (*p_security_control_field) & SECURITY_LEVEL_MASK;
 }
 
 const uint8_t * nrf_802154_frame_parser_frame_counter_get(const uint8_t * p_frame)

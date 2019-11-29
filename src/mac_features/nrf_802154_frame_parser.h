@@ -380,14 +380,14 @@ const uint8_t * nrf_802154_frame_parser_csl_ie_header_get(const uint8_t * p_fram
 uint8_t nrf_802154_frame_parser_frame_type_get(const uint8_t * p_frame);
 
 /**
- * @brief Gets the security level provided in frame security field
+ * @brief Gets the security level provided in frame security control field
  *
- * @param[in] p_security_field  Pointer to a security field
+ * @param[in] p_security_control_field  Pointer to a Auxiliary Security Header
  *
  * @returns  Value of a given security level in the @p p_security_field.
  *
  */
-uint8_t nrf_802154_frame_parser_security_level_get(const uint8_t * p_security_field);
+uint8_t nrf_802154_frame_parser_security_level_get(const uint8_t * p_security_control_field);
 
 /**
  * @brief Gets the address of frame counter field in given frame

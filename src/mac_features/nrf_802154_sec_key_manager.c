@@ -111,7 +111,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
     {
         switch (key_id_mode)
         {
-            case 0x00: // Chapter 9.2.2a)
+            case 0x00:                                                       // Chapter 9.2.2a)
 
                 // Data preparation
                 if ((device_addr_mode == NONE) || (p_device_pan_id == NULL)) // Chapter 9.2.2a)1)
@@ -129,16 +129,16 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                     }
                     else // Chapter 9.2.2a)3)
                     {
-                        uint8_t coord_short_addr_compare[SHORT_ADDR_LENGTH] = {0xff, 0xff};  // Check coord_short_addr = 0xfffe
+                        uint8_t coord_short_addr_compare[SHORT_ADDRESS_SIZE] = {0xff, 0xff};  // Check coord_short_addr = 0xfffe
 
                         if (memcmp(nrf_802154_pib_coord_short_address_get(),
-                                    coord_short_addr_compare, SHORT_ADDR_LENGTH) == 0) // Chapter 9.2.2a)3)iii)
+                                   coord_short_addr_compare, SHORT_ADDRESS_SIZE) == 0) // Chapter 9.2.2a)3)iii)
                         {
                             return false;
                         }
-                        coord_short_addr_compare[0] = 0xfe;                           // Check coord_short_addr = 0xfffe
+                        coord_short_addr_compare[0] = 0xfe;                            // Check coord_short_addr = 0xfffe
                         if (memcmp(nrf_802154_pib_coord_short_address_get(),
-                                    coord_short_addr_compare, SHORT_ADDR_LENGTH) == 0) // Chapter 9.2.2a)3)i)
+                                   coord_short_addr_compare, SHORT_ADDRESS_SIZE) == 0) // Chapter 9.2.2a)3)i)
                         {
                             p_device_addr = nrf_802154_pib_coord_extended_address_get();
                         }
@@ -156,18 +156,18 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                     {
                         if ((device_addr_mode == mp_key_id_lookup_list[i].key_device_addr_mode) &&
                             (memcmp(p_device_pan_id, mp_key_id_lookup_list[i].key_device_pan_id,
-                                    PAN_ID_LENGTH) == 0)) // Chapter 9.2.2a)4)
+                                    PAN_ID_SIZE) == 0)) // Chapter 9.2.2a)4)
                         {
                             uint8_t addr_length = 0;
 
                             switch (device_addr_mode)
                             {
                                 case SHORT:
-                                    addr_length = SHORT_ADDR_LENGTH;
+                                    addr_length = SHORT_ADDRESS_SIZE;
                                     break;
 
                                 case EXTENDED:
-                                    addr_length = EXTENDED_ADDR_LENGTH;
+                                    addr_length = EXTENDED_ADDRESS_SIZE;
                                     break;
 
                                 default:

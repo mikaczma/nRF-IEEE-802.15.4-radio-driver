@@ -38,16 +38,13 @@
 #define NRF_802154_SEC_KEY_MANAGER_H_
 
 #include <stdint.h>
+#include "../nrf_802154_const.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define FRAME_COUNTER_LENGTH 4  ///< As defined in 802.15.4 Std - Chapter 9.4.2 & Table 9-10
-#define KEY_LENGTH           16 ///< As defined in 802.15.4 Std - Table 9-10
-#define EXTENDED_ADDR_LENGTH 8  ///< As defined in 802.15.4 Std - Chapter 7.1
-#define SHORT_ADDR_LENGTH    2  ///< As defined in 802.15.4 Std - Table 9-14
-#define PAN_ID_LENGTH        2  ///< As defined in 802.15.4 Std - Table 9-14
+#define KEY_LENGTH 16 ///< As defined in 802.15.4 Std - Table 9-10
 
 // As defined in 802.15.4-2015 Std Table 9-2
 typedef enum
@@ -84,8 +81,8 @@ typedef struct
 // As defined in 802.15.4-2015 Std Table 9-11
 typedef struct
 {
-    uint8_t device_extended_address[EXTENDED_ADDR_LENGTH];
-    uint8_t device_frame_counter[FRAME_COUNTER_LENGTH];
+    uint8_t device_extended_address[EXTENDED_ADDRESS_SIZE];
+    uint8_t device_frame_counter[FRAME_COUNTER_SIZE];
 } nrf_802154_sec_key_manager_key_device_frame_counter_t;
 
 // As defined in 802.15.4-2015 Std Table 9-10
@@ -105,7 +102,7 @@ typedef struct
     uint8_t                                   * key_source; // < Present only if key_id_mode is equal to 0x02 (4 bytes long) or 0x03 (8 bytes long)
     uint8_t                                     key_index;
     sec_key_device_addr_mode_t                  key_device_addr_mode;
-    uint8_t                                     key_device_pan_id[PAN_ID_LENGTH];
+    uint8_t                                     key_device_pan_id[PAN_ID_SIZE];
     uint8_t                                   * key_device_address; // < Present only if key_id_mode is equal to 0x00 & in range specified by key_device_addr_mode
     nrf_802154_sec_key_manager_key_descriptor_t key_descriptor;
 } nrf_802154_sec_key_manager_key_id_lookup_descriptor_t;
