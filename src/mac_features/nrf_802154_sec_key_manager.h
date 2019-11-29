@@ -162,13 +162,13 @@ void nrf_802154_sec_key_manager_lookup_list_set(
  * @retval false Status of procedure is FAILED and key descriptor is NULL
  */
 bool nrf_802154_sec_key_manager_lookup_procedure(
-    const uint8_t                               * p_frame,
-    uint8_t                                       key_id_mode,
-    uint8_t                                     * p_key_source,
-    uint8_t                                       key_index,
-    sec_key_device_addr_mode_t                    device_addr_mode,
-    uint8_t                                     * p_device_pan_id,
-    uint8_t                                     * p_device_addr,
-    nrf_802154_sec_key_manager_key_descriptor_t * p_key_descriptor);
+    const uint8_t                                * p_frame,
+    uint8_t                                        key_id_mode,
+    uint8_t                                      * p_key_source,
+    uint8_t                                        key_index,
+    sec_key_device_addr_mode_t                     device_addr_mode,
+    uint8_t                                      * p_device_pan_id,
+    uint8_t                                      * p_device_addr,
+    nrf_802154_sec_key_manager_key_descriptor_t ** pp_key_descriptor);
 
 #endif /* NRF_802154_SEC_KEY_MANAGER_H_ */
