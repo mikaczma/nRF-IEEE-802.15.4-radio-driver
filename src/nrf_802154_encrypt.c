@@ -523,7 +523,7 @@ void nrf_802154_encrypt_aes_ccm_auth_transform_trigger(const uint8_t * p_frame)
  * @brief Copy blocks of memory in reverse order
  *
  * @note Source and destination buffers need to be check for NULL referencing
- * 
+ *
  * @param[out] p_dst - pointer to destination buffer
  * @param[in] p_src - pointer to source buffer
  * @param[in] n - length of data block
@@ -532,7 +532,7 @@ static inline void memcpy_rev(void * p_dst, const void * p_src, size_t n)
 {
     for (size_t i = 0; i < n; i++)
     {
-        *(uint8_t *)(p_dst+i) = *(uint8_t *)(p_src+n-1-i);
+        *(uint8_t *)(p_dst + i) = *(uint8_t *)(p_src + n - 1 - i);
     }
 }
 
