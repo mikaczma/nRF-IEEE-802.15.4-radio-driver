@@ -141,7 +141,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                                 {
                                     return false;
                                 }
-                                coord_short_addr_compare[1] = 0xfe;                      // Check coord_short_addr = 0xfffe
+                                coord_short_addr_compare[0] = 0xfe;                      // Check coord_short_addr = 0xfffe
                                 if (memcmp(nrf_802154_pib_coord_short_address_get(),
                                            coord_short_addr_compare, SHORT_ADDR_LENGTH)) // Chapter 9.2.2a)3)i)
                                 {
