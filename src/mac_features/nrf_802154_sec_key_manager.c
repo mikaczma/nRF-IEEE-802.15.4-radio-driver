@@ -125,7 +125,7 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                 {
                     if (frame_type == FRAME_TYPE_BEACON) // Chapter 9.2.2a)2)
                     {
-                        p_device_addr = nrf_802154_pib_coord_extended_address_get();
+                        p_device_addr = (uint8_t *)nrf_802154_pib_coord_extended_address_get();
                     }
                     else // Chapter 9.2.2a)3)
                     {
@@ -140,11 +140,11 @@ bool nrf_802154_sec_key_manager_lookup_procedure(
                         if (memcmp(nrf_802154_pib_coord_short_address_get(),
                                    coord_short_addr_compare, SHORT_ADDRESS_SIZE) == 0) // Chapter 9.2.2a)3)i)
                         {
-                            p_device_addr = nrf_802154_pib_coord_extended_address_get();
+                            p_device_addr = (uint8_t *)nrf_802154_pib_coord_extended_address_get();
                         }
                         else // Chapter 9.2.2a)3)ii)
                         {
-                            p_device_addr = nrf_802154_pib_coord_short_address_get();
+                            p_device_addr = (uint8_t *)nrf_802154_pib_coord_short_address_get();
                         }
                     }
                 }

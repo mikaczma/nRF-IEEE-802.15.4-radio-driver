@@ -526,11 +526,11 @@ void nrf_802154_encrypt_aes_ccm_auth_transform_trigger(const uint8_t * p_frame)
  * @param[in] p_src - pointer to source buffer
  * @param[in] n - length of data block
  */
-static inline void memcpy_rev(void * p_dst, void * p_src, size_t n)
+static inline void memcpy_rev(void * p_dst, const void * p_src, size_t n)
 {
     for (size_t i = 0; i < n; i++)
     {
-        p_dst[i] = p_src[n - 1 - i];
+        *(uint8_t *)(p_dst+i) = *(uint8_t *)(p_src+n-1-i);
     }
 }
 
