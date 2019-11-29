@@ -39,7 +39,10 @@
 #include <stdbool.h>
 #include <string.h>
 #include "nrf_802154_encrypt.h"
+#include "nrf_802154_const.h"
 #include "nrf_ecb.h"
+#include "nrf_802154_pib.h"
+#include "mac_features/nrf_802154_frame_parser.h"
 
 /**
  * @brief Mode of operation Annex B3.2e
@@ -514,6 +517,51 @@ void nrf_802154_encrypt_aes_ccm_auth_transform_trigger(const uint8_t * p_frame)
     {
         nrf_802154_encrypt_aes_ccm_auth_transform(&m_aes_ccm_frame);
     }
+}
+
+bool nrf_802154_encrypt_nonce_generate(const uint8_t * p_frame, bool is_tsch_mode,
+                                       uint8_t * p_nonce)
+{
+    if (p_nonce == NULL)
+    {
+        return false;
+    }
+
+    uint8_t nonce[NRF_802154_ENCRYPT_NONCE_SIZE];
+
+    memset(nonce, 0, NRF_802154_ENCRYPT_NONCE_SIZE);
+
+    nrf_802154_frame_parser_mhr_data_t mhr_data;
+
+    nrf_802154_frame_parser_mhr_parse(p_frame, &mhr_data);
+
+    if (!is_tsch_mode)
+    {
+        if (mhr_data.src_addr_size != EXTENDED_ADDRESS_SIZE)
+        {
+            return false;
+        }
+
+        for (uint8_t i = 0; i < EXTENDED_ADDRESS_SIZE; i++)
+        {
+            nonce[i] = mhr_data.p_src_addr[EXTENDED_ADDRESS_SIZE - 1 - i];
+        }
+
+        const uint8_t * frame_counter = nrf_802154_frame_parser_frame_counter_get(p_frame);
+
+        for (uint8_t i = 0; i < FRAME_COUNTER_SIZE; i++)
+        {
+            nonce[i + EXTENDED_ADDRESS_SIZE] = frame_counter[FRAME_COUNTER_SIZE - 1 - i];
+        }
+
+        nonce[NRF_802154_ENCRYPT_NONCE_SIZE - 1] = nrf_802154_frame_parser_security_level_get(
+            mhr_data.p_sec_ctrl);
+
+        memcpy(p_nonce, nonce, NRF_802154_ENCRYPT_NONCE_SIZE);
+        return true;
+    }
+
+    return false;
 }
 
 #ifdef ENCRYPT_TX_STARTED

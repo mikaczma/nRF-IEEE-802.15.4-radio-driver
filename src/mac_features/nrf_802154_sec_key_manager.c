@@ -44,14 +44,57 @@
 #include "../nrf_802154_const.h"
 
 static nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * mp_key_id_lookup_list = NULL;
-static size_t m_key_id_lookup_list_length = 0; // Amount of entries in the lookup list
+static size_t   m_key_id_lookup_list_length = 0; // Amount of entries in the lookup list
+static uint32_t m_frame_counter             = 0; // Frame counter as defined in 802.15.4-2015 Std Table 9-8
+
+void nrf_802154_sec_key_manager_frame_counter_store(
+    nrf_802154_sec_key_manager_key_descriptor_t * p_key_descriptor,
+    bool                                          is_tsch_mode)
+{
+    if (!is_tsch_mode)
+    {
+        if (p_key_descriptor->frame_counter_per_key)
+        {
+            p_key_descriptor->key_frame_counter++;
+        }
+        else
+        {
+            m_frame_counter++;
+        }
+    }
+}
+
+bool nrf_802154_sec_key_manager_frame_counter_check(
+    nrf_802154_sec_key_manager_key_descriptor_t * p_key_descriptor,
+    bool                                          is_tsch_mode)
+{
+    if (!is_tsch_mode)
+    {
+        if (!p_key_descriptor->frame_counter_per_key)
+        {
+            if (m_frame_counter == 0xffffffff)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (p_key_descriptor->key_frame_counter == 0xffffffff)
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
 
 void nrf_802154_sec_key_manager_lookup_list_set(
     nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * p_key_id_lookup_list,
-    size_t                                                  list_lenght)
+    size_t                                                  list_length)
 {
     mp_key_id_lookup_list       = p_key_id_lookup_list;
-    m_key_id_lookup_list_length = list_lenght;
+    m_key_id_lookup_list_length = list_length;
 }
 
 bool nrf_802154_sec_key_manager_lookup_procedure(

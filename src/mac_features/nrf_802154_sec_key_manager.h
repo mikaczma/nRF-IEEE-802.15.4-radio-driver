@@ -93,7 +93,7 @@ typedef struct
 {
     nrf_802154_sec_key_manager_key_usage_descriptor_t     * key_usage_descriptor_list;
     uint8_t                                                 key[KEY_LENGTH];
-    uint8_t                                                 key_frame_counter[FRAME_COUNTER_LENGTH];
+    uint32_t                                                key_frame_counter;
     bool                                                    frame_counter_per_key;
     nrf_802154_sec_key_manager_key_device_frame_counter_t * key_device_frame_counter_list;
 } nrf_802154_sec_key_manager_key_descriptor_t;
@@ -111,6 +111,29 @@ typedef struct
 } nrf_802154_sec_key_manager_key_id_lookup_descriptor_t;
 
 /**
+ * @brief   Update and store procedure for frame counter as defined in 802.15.4-2015 Std Chapter 9.2.1g)
+ *
+ * @param[in] p_key_descriptor - Pointer to key descriptor
+ * @param[in] is_tsch_mode - value to check if device is running in TSCH mode
+ */
+void nrf_802154_sec_key_manager_frame_counter_store(
+    nrf_802154_sec_key_manager_key_descriptor_t * p_key_descriptor,
+    bool                                          is_tsch_mode);
+
+/**
+ * @brief   Check procedure for frame counter as defined in 802.15.4-2015 Std Chapter 9.2.1d)
+ *
+ * @param[in] p_key_descriptor - Pointer to key descriptor
+ * @param[in] is_tsch_mode - value to check if device is running in TSCH mode
+ *
+ * @retval true - if frame counter is not overused
+ * @retval false - if frame counter overflow
+ */
+bool nrf_802154_sec_key_manager_frame_counter_check(
+    nrf_802154_sec_key_manager_key_descriptor_t * p_key_descriptor,
+    bool                                          is_tsch_mode);
+
+/**
  * @brief   Set lookup list from higher layer
  *
  * @note perform assignment of externally allocated lookup list
@@ -120,7 +143,7 @@ typedef struct
  */
 void nrf_802154_sec_key_manager_lookup_list_set(
     nrf_802154_sec_key_manager_key_id_lookup_descriptor_t * p_key_id_lookup_list,
-    size_t                                                  list_lenght);
+    size_t                                                  list_length);
 
 /**
  * @brief   KeyDescriptor lookup procedure

@@ -57,6 +57,8 @@
 #define DSN_SUPPRESS_BIT             0x01                                         ///< Bits containing the DSN suppression field.
 
 #define FRAME_COUNTER_SUPPRESS_BIT   0x20                                         ///< Bit containing the Frame Counter Suppression field.
+#define FRAME_COUNTER_OFFSET         1                                            ///< Offset in bytes from Security Control Field
+#define FRAME_COUNTER_SIZE           4                                            ///< Size of frame counter in bytes
 
 #define FRAME_PENDING_OFFSET         1                                            ///< Byte containing a pending bit (+1 for the frame length byte).
 #define FRAME_PENDING_BIT            (1 << 4)                                     ///< Pending bit.
@@ -172,6 +174,7 @@
 #define MIN_LIFS_PERIOD_US           640                                          ///< Minimum Long IFS period default value in us.
 #define MAX_SIFS_FRAME_SIZE          18                                           ///< Maximum frame length which can be followed by the Short Interframe Space.
 
+#define IEEE_80215_CID_SIZE          3                                            ///< Size of IEEE 802.15 CID field as given in 802.15.4-2015 Std Table 9-3
 typedef enum
 {
     REQ_ORIG_HIGHER_LAYER,

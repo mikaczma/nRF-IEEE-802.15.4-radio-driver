@@ -115,6 +115,19 @@ void nrf_802154_encrypt_schedule_aes_ccm_auth_transform(
  */
 void nrf_802154_encrypt_aes_ccm_auth_transform_trigger(const uint8_t * p_frame);
 
+/**
+ * @brief Nonce generator as defined in 802.15.4-2015 Std Chapter 9.3.2
+ *
+ * @param[in] p_frame - pointer to frame for which nonce is generated
+ * @param[in] is_tsch_mode - check if device is running in TSCH mode
+ * @param[out] p_nonce - pointer where to place generated nonce
+ *
+ * @retval true - if nonce is generated
+ * @retval false - if nonce is not generated
+ */
+bool nrf_802154_encrypt_nonce_generate(const uint8_t * p_frame, bool is_tsch_mode,
+                                       uint8_t * p_nonce);
+
 #ifdef ENCRYPT_TX_STARTED
 
 /**

@@ -749,3 +749,22 @@ uint8_t nrf_802154_frame_parser_frame_type_get(const uint8_t * p_frame)
 {
     return frame_type_get(p_frame);
 }
+
+uint8_t nrf_802154_frame_parser_security_level_get(const uint8_t * p_security_field)
+{
+    return (*p_security_field) & SECURITY_LEVEL_MASK;
+}
+
+const uint8_t * nrf_802154_frame_parser_frame_counter_get(const uint8_t * p_frame)
+{
+    const uint8_t * sec_ctrl_addr = nrf_802154_frame_parser_sec_ctrl_get(p_frame);
+
+    if (sec_ctrl_addr == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        return nrf_802154_frame_parser_sec_ctrl_get(p_frame) + FRAME_COUNTER_OFFSET;
+    }
+}
